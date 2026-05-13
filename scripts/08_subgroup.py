@@ -11,7 +11,7 @@ from lib_house import (
     SPEC_COLS, IMAGE_COLS, FIGURES_DIR, RESULTS_DIR,
     CSUB_BLUE, CSUB_GOLD, INK, MUTED, style_axes,
 )
-from models import fit_tree, predict_tree
+from models import knn_predict, fit_scaler, apply_scaler
 
 plt.rcParams.update({
     "font.family": "DejaVu Sans",
@@ -21,6 +21,11 @@ plt.rcParams.update({
 
 
 def main():
+    out_csv = os.path.join(RESULTS_DIR, "subgroup_top10_cities.csv")
+    if os.path.exists(out_csv):
+        print(f"{out_csv} exists, skipping subgroup analysis")
+        return
+
     df = load_features().reset_index(drop=True)
     tr, va, te = load_splits()
     df, _, _ = attach_city_target_mean(df, tr)
@@ -29,11 +34,13 @@ def main():
     X_specs = df[SPEC_COLS].to_numpy(dtype=float)
     X_full  = df[SPEC_COLS + IMAGE_COLS].to_numpy(dtype=float)
 
-    nodes_specs = fit_tree(X_specs[tr], y[tr], max_depth=15, min_leaf=10)
-    nodes_full  = fit_tree(X_full [tr], y[tr], max_depth=8,  min_leaf=10)
+    mu_s, sd_s = fit_scaler(X_specs[tr])
+    pred_s = knn_predict(apply_scaler(X_specs[tr], mu_s, sd_s), y[tr],
+                         apply_scaler(X_specs[va], mu_s, sd_s), k=15)
 
-    pred_s = predict_tree(nodes_specs, X_specs[va])
-    pred_f = predict_tree(nodes_full,  X_full [va])
+    mu_f, sd_f = fit_scaler(X_full[tr])
+    pred_f = knn_predict(apply_scaler(X_full[tr], mu_f, sd_f), y[tr],
+                         apply_scaler(X_full[va], mu_f, sd_f), k=15)
     val = df.iloc[va].copy()
     val["abs_s"] = np.abs(pred_s - y[va])
     val["abs_f"] = np.abs(pred_f - y[va])
@@ -59,8 +66,8 @@ def main():
     ax.barh(y_pos - h/2, out["mae_image"] / 1000, height=h, color=CSUB_GOLD, label="specs + image")
     ax.set_yticks(y_pos); ax.set_yticklabels(out["city"])
     ax.set_xlabel("validation MAE ($k)")
-    ax.set_title("per-city MAE, decision tree, specs vs specs + image")
-    style_axes(ax); ax.legend(frameon=False, loc="lower right")
+    ax.set_title("per-city MAE, KNN, specs vs specs + image")
+    style_axes(ax); ax.legend(frameon=False, loc="upper right")
     fig.tight_layout()
     fig.savefig(os.path.join(FIGURES_DIR, "fig12_per_city_delta.png"), dpi=170, bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -72,7 +79,7 @@ def main():
     ax.axvline(0, color=INK, linewidth=1)
     ax.set_yticks(np.arange(len(out))[::-1]); ax.set_yticklabels(out["city"])
     ax.set_xlabel("MAE change with image features ($k, negative = better)")
-    ax.set_title("per-city delta: blue = image features helped, gold = image features hurt")
+    ax.set_title("per-city delta: blue = image features helped, gold = image features hurt (KNN)")
     style_axes(ax)
     fig.tight_layout()
     fig.savefig(os.path.join(FIGURES_DIR, "fig13_per_city_delta_signed.png"), dpi=170, bbox_inches="tight", facecolor="white")

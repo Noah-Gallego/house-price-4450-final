@@ -80,32 +80,32 @@ def slide_title(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, CSUB_BLUE)
     add_text(s, Inches(0.7), Inches(1.7), Inches(12.0), Inches(2.5),
-             "House Price Prediction\nfrom Specs and Exterior Photos",
+             "House Price Prediction\nFrom Specs and Exterior Photos",
              size=50, bold=True, color=WHITE)
     add_bar(s, Inches(0.7), Inches(4.4), Inches(2.0), Inches(0.08), CSUB_GOLD)
     add_text(s, Inches(0.7), Inches(4.6), Inches(12.0), Inches(0.6),
              "CSU Bakersfield, CMPS 4450 Data Mining Final",
              size=22, color=CSUB_GOLD)
     add_text(s, Inches(0.7), Inches(5.3), Inches(12.0), Inches(0.6),
-             "Noah Gallego",
-             size=18, color=WHITE)
+              "Noah Gallego, Gerardo Gomez, Justin Lo, Juancarlos Sandoval — Group 4",
+              size=18, color=WHITE)
 
 
 def slide_question(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "The question",
-           "specs already get us most of the way. can the photo close the gap?")
+    header(s, "The Question",
+           "Specs Already Get Us Most of the Way. Can the Photo Close the Gap?")
     add_text(s, Inches(0.55), Inches(2.0), Inches(12.2), Inches(0.5),
-             "what we know about each house", size=20, bold=True, color=CSUB_BLUE)
+             "What We Know About Each House", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(2.55), Inches(12.2), Inches(1.5),
-             "beds, baths, square footage, city, and one exterior photo.",
+             "Beds, baths, square footage, city, and one exterior photo.",
              size=20, color=INK)
     add_text(s, Inches(0.55), Inches(4.3), Inches(12.2), Inches(0.5),
-             "the experiment", size=20, bold=True, color=CSUB_BLUE)
+             "The Experiment", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(4.85), Inches(12.2), Inches(2.0),
-             "fit a model on specs alone. then add features from the photo.\n"
-             "does the second model beat the first?",
+             "Fit a model on specs alone. Then add features from the photo.\n"
+             "Does the second model beat the first?",
              size=20, color=INK)
 
 
@@ -113,7 +113,7 @@ def slide_data(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
     header(s, "Data",
-           "15,474 southern california listings, $195k to $2M")
+           "15,474 Southern California Listings, $195k to $2M")
     s.shapes.add_picture(os.path.join(FIG, "fig01_price_hist.png"),
                          Inches(0.4), Inches(1.7), width=Inches(6.5))
     s.shapes.add_picture(os.path.join(FIG, "fig03_top_cities.png"),
@@ -123,8 +123,8 @@ def slide_data(prs):
 def slide_samples(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "What a row looks like",
-           "one photo plus a few numeric fields per house")
+    header(s, "What a Row Looks Like",
+           "One Photo Plus a Few Numeric Fields Per House")
     s.shapes.add_picture(os.path.join(FIG, "fig02_sample_houses.png"),
                          Inches(1.7), Inches(1.55), height=Inches(5.5))
 
@@ -132,117 +132,111 @@ def slide_samples(prs):
 def slide_split(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Train, validation, test",
-           "how we use the 15,474 listings")
+    header(s, "Train, Validation, Test",
+           "How We Use the 15,474 Listings")
 
     add_text(s, Inches(0.55), Inches(1.7), Inches(12.2), Inches(0.5),
-             "how we set it up", size=20, bold=True, color=CSUB_BLUE)
+             "How We Set It Up", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(2.15), Inches(12.2), Inches(3.5),
-             "shuffle the listings and split 65 / 15 / 20 into train, validation, and test\n"
-             "fit the models on train\n"
-             "pick the model and its settings (tree depth, KNN k) by validation error\n"
-             "re-run the whole comparison on 500 random reshuffles to check stability\n"
-             "open the test set once, at the end, with every choice already locked",
+             "Shuffle the listings and split 65 / 15 / 20 into train, validation, and test\n"
+             "Fit the models on train\n"
+             "Pick the model and its settings (KNN k) by validation error\n"
+             "Re-run the whole comparison on 500 random reshuffles to check stability\n"
+             "Open the test set once, at the end, with every choice already locked",
              size=17, color=INK)
 
     add_text(s, Inches(0.55), Inches(5.2), Inches(12.2), Inches(0.5),
-             "why this design", size=20, bold=True, color=CSUB_BLUE)
+             "Why This Design", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(5.65), Inches(12.2), Inches(1.5),
-             "one fixed split swings by several thousand dollars just from luck.\n"
-             "the reshuffles smooth that out, and the test number stays honest because\n"
-             "it never gets to inform a choice.",
+             "One fixed split swings by several thousand dollars just from luck.\n"
+             "The reshuffles smooth that out, and the test number stays honest because\n"
+              "It never gets to inform a choice.",
              size=16, color=INK)
 
 
 def slide_why_not_pixels(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Why not just feed in the pixels?",
-           "the dimensionality wall")
+    header(s, "Why Not Just Feed in the Pixels?",
+           "The Dimensionality Wall")
 
-    add_text(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(0.6),
-             "each photo is 128 x 128 x 3 = 49,152 pixel values",
-             size=22, bold=True, color=CSUB_BLUE)
-    add_text(s, Inches(0.55), Inches(2.7), Inches(12.2), Inches(0.6),
-             "training set has roughly 10,000 houses",
-             size=22, bold=True, color=CSUB_BLUE)
+    add_text(s, Inches(0.55), Inches(2.1), Inches(12.2), Inches(0.6),
+              "Each Photo Is 128 x 128 x 3 = 49,152 Pixel Values",
+              size=22, bold=True, color=CSUB_BLUE)
+    add_text(s, Inches(0.55), Inches(2.9), Inches(12.2), Inches(0.6),
+              "Training Set Has Roughly 10,000 Houses",
+              size=22, bold=True, color=CSUB_BLUE)
 
-    add_text(s, Inches(0.55), Inches(4.0), Inches(12.2), Inches(0.6),
-             "more inputs than examples", size=20, bold=True, color=INK)
-    add_text(s, Inches(0.55), Inches(4.6), Inches(12.2), Inches(2.5),
-             "the model can fit anything in training and learn nothing useful.\n"
-             "linear regression is underdetermined.\n"
-             "trees and KNN see pixel positions as unrelated columns — shift the house\n"
-             "ten pixels left and every input value changes.",
+    add_text(s, Inches(0.55), Inches(4.2), Inches(12.2), Inches(0.6),
+              "More Inputs Than Examples", size=20, bold=True, color=INK)
+    add_text(s, Inches(0.55), Inches(4.8), Inches(12.2), Inches(2.5),
+             "The model can fit anything in training and learn nothing useful.\n"
+             "Linear regression is underdetermined.\n"
+             "KNN sees pixel positions as unrelated columns — shift the house\n"
+             "Ten pixels left and every input value changes.",
              size=17, color=INK)
 
 
 def slide_filter_intro(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "A filter is a 3x3 window that slides across the photo",
-           "the kernel is fixed, the output is a smaller summary")
+    header(s, "A Filter Is a 3x3 Window That Slides Across the Photo",
+           "The Kernel Is Fixed, the Output Is a Smaller Summary")
     gif_path = os.path.join(REPO, "slides_assets", "sobel_sliding.gif")
     if os.path.exists(gif_path):
         s.shapes.add_picture(gif_path, Inches(1.2), Inches(1.7), height=Inches(4.5))
-    add_text(s, Inches(0.55), Inches(6.5), Inches(12.2), Inches(0.7),
-             "at each position, multiply the 9 pixels under the window by the kernel weights and sum.\n"
-             "that sum becomes one output pixel.  here the kernel detects horizontal edges (sobel-y).",
-             size=15, color=INK)
 
 
 def slide_filter_bank(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Our six filters",
-           "one photo, six response maps")
+    header(s, "Our Six Filters",
+           "One Photo, Six Response Maps")
     s.shapes.add_picture(os.path.join(FIG, "fig19_filter_bank.png"),
-                         Inches(0.2), Inches(1.9), width=Inches(13.0))
-    add_text(s, Inches(0.55), Inches(5.5), Inches(12.2), Inches(0.6),
-             "edges catch the roofline and window frames.  color dominances pick out sky, lawn, and roof.",
-             size=15, color=INK)
+                          Inches(0.2), Inches(1.9), width=Inches(13.0))
+
 
 
 def slide_pooling(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Pooling: 128 x 128 down to 4 x 4",
-           "each filter response collapses to 16 numbers")
+    header(s, "Pooling: 128 x 128 Down to 4 x 4",
+           "Each Filter Response Collapses to 16 Numbers")
 
     add_text(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(0.5),
-             "the idea", size=20, bold=True, color=CSUB_BLUE)
+             "The Idea", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(2.4), Inches(12.2), Inches(3.0),
-             "split each 128 x 128 response into a 4 x 4 grid of 32 x 32 patches.\n"
-             "take the mean of each patch.\n"
-             "now each filter is 16 numbers instead of 16,384.",
+             "Split each 128 x 128 response into a 4 x 4 grid of 32 x 32 patches.\n"
+             "Take the mean of each patch.\n"
+             "Now each filter is 16 numbers instead of 16,384.",
              size=18, color=INK)
 
     add_text(s, Inches(0.55), Inches(4.8), Inches(12.2), Inches(0.5),
-             "what the model sees", size=20, bold=True, color=CSUB_BLUE)
+             "What the Model Sees", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(5.3), Inches(12.2), Inches(2.0),
-             "six filters x 16 cells = 96 spatially-aware numbers per photo.\n"
-             "plus the 4 specs.  100 features total per house.",
+             "Six filters x 16 cells = 96 spatially-aware numbers per photo.\n"
+             "Plus the 4 specs.  100 features total per house.",
              size=18, color=INK)
 
 
 def slide_features(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "What the model sees, end to end",
-           "100 numbers per house")
+    header(s, "What the Model Sees, End to End",
+           "100 Numbers Per House")
 
     add_text(s, Inches(0.55), Inches(2.0), Inches(6.0), Inches(0.6),
-             "from the listing", size=22, bold=True, color=CSUB_BLUE)
+             "From the Listing", size=22, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(2.7), Inches(6.0), Inches(4.0),
-             "beds\nbaths\nsquare footage\ntypical price in that city",
+             "Beds\nBaths\nSquare footage\nTypical price in that city",
              size=20, color=INK)
 
     add_text(s, Inches(7.0), Inches(2.0), Inches(6.0), Inches(0.6),
-             "from the photo", size=22, bold=True, color=CSUB_BLUE)
+             "From the Photo", size=22, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(7.0), Inches(2.7), Inches(6.0), Inches(4.5),
              "6 filters, each pooled to 4 x 4\n"
              "= 96 numbers describing\n"
-             "what's where in the photo",
+             "What's where in the photo",
              size=18, color=INK)
 
 
@@ -282,38 +276,34 @@ def _styled_table(slide, x, y, w, h, rows, *, header_fill=None, body_fill=None,
 def slide_columns(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Eight columns from Kaggle",
-           "what arrived in the CSV, and what we do with each one")
+    header(s, "Eight Columns From Kaggle",
+           "What Arrived in the CSV, and What We Do With Each One")
 
     rows = [
-        ["column",      "example",                "action"],
-        ["image_id",    "0",                      "drop"],
-        ["street",      "1317 Van Buren Avenue",  "drop"],
-        ["citi",        "Salton City, CA",        "convert to coordinates"],
-        ["n_citi",      "317",                    "drop"],
-        ["bed",         "3",                      "keep"],
-        ["bath",        "2.0",                    "keep"],
-        ["sqft",        "1,560",                  "keep"],
-        ["price",       "$201,900",               "target"],
+        ["Column",      "Example",                "Action"],
+        ["image_id",    "0",                      "Drop"],
+        ["street",      "1317 Van Buren Avenue",  "Drop"],
+        ["citi",        "Salton City, CA",        "Convert to coordinates"],
+        ["n_citi",      "317",                    "Drop"],
+        ["bed",         "3",                      "Keep"],
+        ["bath",        "2.0",                    "Keep"],
+        ["sqft",        "1,560",                  "Keep"],
+        ["price",       "$201,900",               "Target"],
     ]
     _styled_table(s, Inches(0.55), Inches(1.7), Inches(12.2), Inches(4.8),
                   rows, font_size=14, header_font_size=15)
-
-    add_text(s, Inches(0.55), Inches(6.55), Inches(12.2), Inches(0.6),
-             "six features go into every model: bed, bath, sqft, city_lat, city_lon, region_id.",
-             size=14, color=INK)
 
 
 def slide_encoding(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "City names become coordinates",
-           "we look each city up once with a geocoding API")
+    header(s, "City Names Become Coordinates",
+           "We Look Each City Up Once With a Geocoding API")
 
     add_text(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(0.6),
-             "the lookup", size=20, bold=True, color=CSUB_BLUE)
+             "The Lookup", size=20, bold=True, color=CSUB_BLUE)
     lookup_rows = [
-        ["city",              "latitude",  "longitude"],
+        ["City",              "Latitude",  "Longitude"],
         ["Beverly Hills, CA", "34.0736",   "-118.4004"],
         ["San Diego, CA",     "32.7157",   "-117.1611"],
         ["Bakersfield, CA",   "35.3733",   "-119.0187"],
@@ -323,41 +313,51 @@ def slide_encoding(prs):
                   lookup_rows, font_size=14, header_font_size=15)
 
     add_text(s, Inches(0.55), Inches(5.0), Inches(12.2), Inches(0.6),
-             "why this works", size=20, bold=True, color=CSUB_BLUE)
+             "Why This Works", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(5.55), Inches(12.2), Inches(2.0),
              "415 unique cities  =>  415 API calls, cached once on disk.\n"
-             "every row gets its city's latitude and longitude.\n"
-             "now 'nearest neighbor' actually means geographically near, not just same city name.",
+             "Every row gets its city's latitude and longitude.\n"
+             "Now 'nearest neighbor' actually means geographically near, not just same city name.",
              size=16, color=INK)
+
+
+def slide_why_k10(prs):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(s, WHITE)
+    header(s, "Why k=10?",
+            "Elbow Method on 415 City Coordinates")
+    img = os.path.join(FIG, "fig22_elbow.png")
+    if os.path.exists(img):
+        s.shapes.add_picture(img, Inches(0.4), Inches(1.7), width=Inches(8.5))
 
 
 def slide_regions(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Grouping cities into regions",
-           "K-means on the 415 city coordinates, k=10")
+    header(s, "Grouping Cities Into Regions",
+           "K-Means on the 415 City Coordinates, k=10")
     img = os.path.join(FIG, "fig22_regions.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.4), Inches(1.6), height=Inches(5.0))
     add_text(s, Inches(9.6), Inches(2.0), Inches(3.4), Inches(0.5),
-             "the idea", size=20, bold=True, color=CSUB_BLUE)
+             "The Idea", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(9.6), Inches(2.6), Inches(3.4), Inches(4.5),
              "K-means takes the\n"
-             "coordinates and groups\n"
-             "nearby cities together.\n\n"
-             "every row gets one\n"
-             "extra feature: region_id.",
+             "Coordinates and groups\n"
+             "Nearby cities together.\n\n"
+             "Every row gets one\n"
+             "Extra feature: region_id.",
              size=14, color=INK)
 
 
 def slide_normalization(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Normalize so no column dominates",
-           "rescale every feature to the same range")
+    header(s, "Normalize So No Column Dominates",
+           "Rescale Every Feature to the Same Range")
 
     rows = [
-        ["feature",    "raw range",            "after min-max"],
+        ["Feature",    "Raw Range",            "After Min-Max"],
         ["bed",        "1 to 6",               "0 to 1"],
         ["bath",       "1 to 5",               "0 to 1"],
         ["sqft",       "500 to 5,400",         "0 to 1"],
@@ -368,33 +368,25 @@ def slide_normalization(prs):
     _styled_table(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(3.9),
                   rows, font_size=14, header_font_size=15)
 
-    add_text(s, Inches(0.55), Inches(5.8), Inches(12.2), Inches(0.5),
-             "min-max:   (value - min) / (max - min)",
-             size=18, bold=True, color=CSUB_BLUE)
-    add_text(s, Inches(0.55), Inches(6.35), Inches(12.2), Inches(0.8),
-             "without normalizing, sqft (range 4,900) drowns out bed (range 5).\n"
-             "every column is now between 0 and 1, so they all matter the same to KNN's distance.",
-             size=14, color=INK)
-
 
 def slide_three_models(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Two models",
-           "to establish a text-only baseline before we touch the photos")
+    header(s, "Two Models",
+           "To Establish a Text-Only Baseline Before We Touch the Photos")
 
     ys = Inches(1.9); col_w = Inches(6.0); gap = Inches(0.4)
     xs = [Inches(0.55), Inches(0.55) + col_w + gap]
-    titles = ["multiple linear regression", "KNN regressor"]
+    titles = ["Multiple Linear Regression", "KNN Regressor"]
     bodies = [
-        "one weight per feature, all summed plus an intercept.\n\n"
-        "prediction =\nw0 + w1*bed + w2*bath + w3*sqft\n"
+        "One weight per feature, all summed plus an intercept.\n\n"
+        "Prediction =\nw1*bed + w2*bath + w3*sqft\n"
         "+ w4*city_lat + w5*city_lon + w6*region.\n\n"
-        "fast and transparent. assumes the relationship\nis a straight line.",
+        "Fast and transparent. Assumes the relationship\nis a straight line.",
 
-        "for a new house, find the k closest houses in\nfeature space.\n\n"
-        "predict by averaging their prices\n(regression, not voting).\n\n"
-        "needs normalized features. tuned by k\nand by the distance function.",
+        "For a new house, find the k closest houses in\nfeature space.\n\n"
+        "Predict by averaging their prices\n(regression, not voting).\n\n"
+        "Needs normalized features. Tuned by k\nand by the distance function.",
     ]
     for x, t, b in zip(xs, titles, bodies):
         add_bar(s, x, ys, col_w, Inches(0.6), CSUB_BLUE)
@@ -407,8 +399,8 @@ def slide_three_models(prs):
 def slide_mlr_results(prs, mlr):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Multiple linear regression",
-           "validation performance, predicted vs actual price")
+    header(s, "Multiple Linear Regression",
+           "Validation Performance, Predicted vs Actual Price")
     img = os.path.join(FIG, "fig23_mlr_pred_vs_actual.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.3), Inches(1.55), height=Inches(5.6))
@@ -416,7 +408,7 @@ def slide_mlr_results(prs, mlr):
     m = mlr["validation_metrics"]
     box_x = Inches(8.5); box_y = Inches(1.9)
     add_text(s, box_x, box_y, Inches(4.4), Inches(0.5),
-             "results", size=22, bold=True, color=CSUB_BLUE)
+             "Results", size=22, bold=True, color=CSUB_BLUE)
 
     rows = [
         ("MAE",   f"${m['mae']/1000:,.0f}k"),
@@ -434,8 +426,8 @@ def slide_mlr_results(prs, mlr):
 def slide_knn_euclidean(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "KNN with Euclidean distance",
-           "each box summarizes 500 random reshuffles at that k")
+    header(s, "KNN With Euclidean Distance",
+           "Each Box Summarizes 500 Random Reshuffles at That k")
     img = os.path.join(FIG, "fig24_knn_euclidean.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.5), Inches(1.7), width=Inches(12.3))
@@ -444,8 +436,8 @@ def slide_knn_euclidean(prs):
 def slide_knn_distances(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "We repeated this for all four distance functions",
-           "euclidean, manhattan, chebyshev, minkowski")
+    header(s, "We Repeated This for All Four Distance Functions",
+           "Euclidean, Manhattan, Chebyshev, Minkowski")
     img = os.path.join(FIG, "fig20_knn_distances.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.3), Inches(1.6), width=Inches(12.7))
@@ -454,24 +446,25 @@ def slide_knn_distances(prs):
 def slide_baseline_box(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Specs only is already strong",
-           "error in dollars, lower is better")
+    header(s, "Specs Only Is Already Strong",
+           "Error in Dollars, Lower Is Better")
     img = os.path.join(FIG, "fig05_baseline_boxplot.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.4), Inches(1.7), width=Inches(8.8))
     add_text(s, Inches(9.5), Inches(2.0), Inches(3.5), Inches(0.6),
-             "decision tree wins", size=20, bold=True, color=CSUB_BLUE)
+             "Specs-Only Baseline", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(9.5), Inches(2.7), Inches(3.5), Inches(4.0),
-             "around $145k off,\non average,\nacross many reshuffles.\n\n"
-             "linear lags. KNN sits\nbetween the two.",
+             "500 reshuffles,\nspecs-only models.\n\n"
+             "KNN around $152k MAE.\nLinear around $164k.\n\n"
+             "Both are well above\nthe constant predictor\nat $280k.",
              size=16, color=INK)
 
 
 def slide_worst_misses(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Where the baseline misses",
-           "the top six errors split into two kinds")
+    header(s, "Where the Baseline Misses",
+           "The Top Six Errors Split Into Two Kinds")
     s.shapes.add_picture(os.path.join(FIG, "fig07_worst_misses.png"),
                          Inches(1.8), Inches(1.55), height=Inches(5.6))
 
@@ -479,28 +472,26 @@ def slide_worst_misses(prs):
 def slide_cap_problem(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "The cap problem",
-           "the dataset has a ceiling")
+    header(s, "The Cap Problem",
+           "The Dataset Has a Ceiling")
     s.shapes.add_picture(os.path.join(FIG, "fig18_cap_cluster.png"),
-                         Inches(1.4), Inches(1.7), width=Inches(10.5))
-    add_text(s, Inches(0.55), Inches(6.7), Inches(12.2), Inches(0.5),
-             "38 houses share the exact price $1,995,000. the model can't reach the cap, so those listings stay at the top of the error list.",
-             size=14, color=INK)
+                          Inches(1.4), Inches(1.7), width=Inches(10.5))
+
 
 
 def slide_hypothesis(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Three things the photo could fix",
-           "the case for adding image features")
+    header(s, "Three Things the Photo Could Fix",
+           "The Case for Adding Image Features")
 
     ys = Inches(2.2); col_w = Inches(4.0); gap = Inches(0.3)
     xs = [Inches(0.55), Inches(0.55) + col_w + gap, Inches(0.55) + 2 * (col_w + gap)]
-    titles = ["condition", "size beyond sqft", "neighborhood look"]
+    titles = ["Condition", "Size Beyond Sqft", "Neighborhood Look"]
     bodies = [
-        "same specs, different\nupkeep and landscaping.\nthat lives in the photo.",
-        "story count, lot size,\nyard space. specs miss\nthose. the photo doesn't.",
-        "trees, driveway, fencing,\nlighting. signals the\nstreet, not just the city.",
+        "Same specs, different\nupkeep and landscaping.\nThat lives in the photo.",
+        "Story count, lot size,\nyard space. Specs miss\nthose. The photo doesn't.",
+        "Trees, driveway, fencing,\nlighting. Signals the\nstreet, not just the city.",
     ]
     for x, t, b in zip(xs, titles, bodies):
         add_bar(s, x, ys, col_w, Inches(0.55), CSUB_BLUE)
@@ -513,53 +504,46 @@ def slide_hypothesis(prs):
 def slide_image_box(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Adding photo features",
-           "same three models, with and without the photo")
+    header(s, "Adding Photo Features",
+           "Same Two Models, With and Without the Photo")
     img = os.path.join(FIG, "fig11_specs_vs_image_boxplot.png")
     if os.path.exists(img):
         s.shapes.add_picture(img, Inches(0.4), Inches(1.7), height=Inches(4.6))
-    add_text(s, Inches(0.55), Inches(6.5), Inches(12.2), Inches(0.6),
-             "no model improved. KNN got much worse.",
-             size=22, bold=True, color=CSUB_BLUE)
 
 
 def slide_bad_photos(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Why? Some photos aren't of the house",
-           "examples pulled from the worst-miss list")
+    header(s, "Why? Some Photos Aren't of the House",
+           "Examples Pulled From the Worst-Miss List")
     s.shapes.add_picture(os.path.join(FIG, "fig16_bad_photos.png"),
-                         Inches(0.3), Inches(2.2), width=Inches(12.7))
-    add_text(s, Inches(0.55), Inches(5.6), Inches(12.2), Inches(0.6),
-             "if the photo shows a harbor or a tree, average color and edge density describe those, not the house.",
-             size=16, color=INK)
+                          Inches(0.3), Inches(2.2), width=Inches(12.7))
+
 
 
 def slide_feature_scales(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Why? Feature scales are wildly different",
-           "raw values span orders of magnitude")
+    header(s, "Why? Feature Scales Are Wildly Different",
+           "Raw Values Span Orders of Magnitude")
     s.shapes.add_picture(os.path.join(FIG, "fig17_feature_scales.png"),
-                         Inches(0.3), Inches(1.55), height=Inches(5.0))
-    add_text(s, Inches(0.55), Inches(6.7), Inches(12.2), Inches(0.5),
-             "pixel variance dwarfs everything else. in a distance-based model that one feature drowns the rest.",
-             size=15, color=INK)
+                          Inches(0.3), Inches(1.55), height=Inches(5.0))
+
 
 
 def slide_preprocess(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "What we tried",
-           "three preprocessing fixes, each motivated by a problem above")
+    header(s, "What We Tried",
+           "Three Preprocessing Fixes, Each Motivated by a Problem Above")
 
     rows = [
-        ("center crop",          "throw out the outer 20% on every side, focus on what's in the middle of the frame.",
-                                 "addresses photos where sky or pavement dominates."),
-        ("per-image normalize",  "rescale each photo so its mean brightness matches every other photo.",
-                                 "addresses photos shot at different times of day or different exposures."),
-        ("add HSV channels",     "compute hue, saturation, and value averages on top of RGB.",
-                                 "color signal that doesn't change with brightness."),
+        ("Center Crop",          "Throw out the outer 20% on every side, focus on what's in the middle of the frame.",
+                                 "Addresses photos where sky or pavement dominates."),
+        ("Per-Image Normalize",  "Rescale each photo so its mean brightness matches every other photo.",
+                                 "Addresses photos shot at different times of day or different exposures."),
+        ("Add HSV Channels",     "Compute hue, saturation, and value averages on top of RGB.",
+                                 "Color signal that doesn't change with brightness."),
     ]
     y = Inches(2.0)
     for name, what, why in rows:
@@ -575,13 +559,13 @@ def slide_preprocess(prs):
 def slide_variant_table(prs, variants):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Did preprocessing help?",
-           "validation MAE, decision tree, by feature variant")
+    header(s, "Did Preprocessing Help?",
+           "Validation MAE by Feature Variant, Linear and KNN")
 
-    left = Inches(1.3); top = Inches(2.0)
+    left = Inches(0.7); top = Inches(2.0)
     widths = [Inches(4.6), Inches(2.4), Inches(2.4), Inches(2.4)]
     cell_h = Inches(0.55)
-    heads = ["feature variant", "MAE", "within $50k", "within $100k"]
+    heads = ["Feature Variant", "Linear MAE", "KNN MAE", "Best"]
 
     def cell(x, y, w, h, text, *, fill, color, bold=False, size=14):
         shp = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
@@ -600,45 +584,43 @@ def slide_variant_table(prs, variants):
         cell(x, top, w, cell_h, h, fill=CSUB_BLUE, color=WHITE, bold=True, size=15)
         x += w
 
-    keys = [
-        ("specs only",                "specs_only_tree"),
-        ("specs + raw photo",         "specs_+_raw_image_tree"),
-        ("specs + center crop",       "specs_+_crop_tree"),
-        ("specs + brightness norm",   "specs_+_per-img_norm_tree"),
-        ("specs + crop + norm + HSV", "specs_+_crop+norm+HSV_tree"),
+    rows_data = [
+        ("Specs Only",                "specs_only_linear",          "specs_only_knn"),
+        ("Specs + Raw Photo",         "specs_+_raw_image_linear",   "specs_+_raw_image_knn"),
+        ("Specs + Center Crop",       "specs_+_crop_linear",        "specs_+_crop_knn"),
+        ("Specs + Brightness Norm",   "specs_+_per-img_norm_linear","specs_+_per-img_norm_knn"),
+        ("Specs + Crop + Norm + HSV", "specs_+_crop+norm+HSV_linear","specs_+_crop+norm+HSV_knn"),
     ]
-    best_mae = min(variants[k]["mae"] for _, k in keys)
+    all_bests = []
+    for _, lk, kk in rows_data:
+        lm = variants[lk]["mae"]; km = variants[kk]["mae"]
+        all_bests.append(min(lm, km))
+    overall_best = min(all_bests)
     y = top + cell_h
-    for i, (label, k) in enumerate(keys):
-        m = variants[k]
+    for i, (label, lk, kk) in enumerate(rows_data):
+        lm = variants[lk]["mae"]; km = variants[kk]["mae"]
+        best = min(lm, km)
         bg = WHITE if i % 2 == 0 else PANEL
-        if m["mae"] == best_mae:
+        if best == overall_best:
             bg = GOLD_TINT
         x = left
-        cell(x, y, widths[0], cell_h, label,                  fill=bg, color=INK, size=14); x += widths[0]
-        cell(x, y, widths[1], cell_h, f"${m['mae']/1000:.0f}k", fill=bg, color=INK, size=14); x += widths[1]
-        cell(x, y, widths[2], cell_h, f"{m['within_50k']:.1%}", fill=bg, color=INK, size=14); x += widths[2]
-        cell(x, y, widths[3], cell_h, f"{m['within_100k']:.1%}",fill=bg, color=INK, size=14)
+        cell(x, y, widths[0], cell_h, label,                   fill=bg, color=INK, size=14); x += widths[0]
+        cell(x, y, widths[1], cell_h, f"${lm/1000:.0f}k",      fill=bg, color=INK, size=14); x += widths[1]
+        cell(x, y, widths[2], cell_h, f"${km/1000:.0f}k",      fill=bg, color=INK, size=14); x += widths[2]
+        cell(x, y, widths[3], cell_h, f"${best/1000:.0f}k",    fill=bg, color=INK, bold=True, size=14)
         y += cell_h
-
-    add_text(s, Inches(0.55), Inches(5.9), Inches(12.2), Inches(0.6),
-             "no variant beats specs only.",
-             size=22, bold=True, color=CSUB_BLUE)
-    add_text(s, Inches(0.55), Inches(6.55), Inches(12.2), Inches(0.6),
-             "color and edge statistics from a single low-resolution photo can't tell us condition or value.",
-             size=15, color=INK)
 
 
 def slide_spatial_results(prs, spatial):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Did spatial features help?",
-           "validation MAE, by feature set and model")
+    header(s, "Did Spatial Features Help?",
+           "Validation MAE, by Feature Set and Model")
 
-    left = Inches(0.6); top = Inches(2.0)
-    widths = [Inches(4.8), Inches(2.2), Inches(2.2), Inches(2.0), Inches(2.0)]
+    left = Inches(0.8); top = Inches(2.0)
+    widths = [Inches(4.8), Inches(2.2), Inches(2.2), Inches(2.0)]
     cell_h = Inches(0.55)
-    heads = ["feature set", "linear", "tree", "knn", "best"]
+    heads = ["Feature Set", "Linear", "KNN", "Best"]
 
     def cell(x, y, w, h, text, *, fill, color, bold=False, size=14):
         shp = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
@@ -658,43 +640,37 @@ def slide_spatial_results(prs, spatial):
         x += w
 
     rows = [
-        ("specs only",            "specs_only"),
-        ("specs + spatial (96)",  "specs_+_spatial_96"),
-        ("spatial only",          "spatial_only_no_specs"),
+        ("Specs Only",            "specs_only"),
+        ("Specs + Spatial (96)",  "specs_+_spatial_96"),
+        ("Spatial Only",          "spatial_only_no_specs"),
     ]
+    all_bests = []
+    for _, prefix in rows:
+        lin  = spatial[f"{prefix}_linear"]["mae"]
+        knn  = spatial[f"{prefix}_knn"]["mae"]
+        all_bests.append(min(lin, knn))
+    overall_best = min(all_bests)
     y = top + cell_h
     for i, (label, prefix) in enumerate(rows):
         lin  = spatial[f"{prefix}_linear"]["mae"]
-        tree = spatial[f"{prefix}_tree"]["mae"]
         knn  = spatial[f"{prefix}_knn"]["mae"]
-        best = min(lin, tree, knn)
+        best = min(lin, knn)
         bg = WHITE if i % 2 == 0 else PANEL
-        if best == min(spatial[f"specs_only_tree"]["mae"], spatial[f"specs_+_spatial_96_tree"]["mae"], spatial[f"spatial_only_no_specs_tree"]["mae"]) and prefix == "specs_only":
+        if best == overall_best and prefix == "specs_only":
             bg = GOLD_TINT
         x = left
         cell(x, y, widths[0], cell_h, label, fill=bg, color=INK, size=14); x += widths[0]
         cell(x, y, widths[1], cell_h, f"${lin/1000:.0f}k",  fill=bg, color=INK, size=14); x += widths[1]
-        cell(x, y, widths[2], cell_h, f"${tree/1000:.0f}k", fill=bg, color=INK, size=14); x += widths[2]
-        cell(x, y, widths[3], cell_h, f"${knn/1000:.0f}k",  fill=bg, color=INK, size=14); x += widths[3]
-        cell(x, y, widths[4], cell_h, f"${best/1000:.0f}k", fill=bg, color=INK, bold=True, size=14)
+        cell(x, y, widths[2], cell_h, f"${knn/1000:.0f}k",  fill=bg, color=INK, size=14); x += widths[2]
+        cell(x, y, widths[3], cell_h, f"${best/1000:.0f}k", fill=bg, color=INK, bold=True, size=14)
         y += cell_h
-
-    add_text(s, Inches(0.55), Inches(5.7), Inches(12.2), Inches(0.6),
-             "spatial features alone get to $284k — barely better than guessing the average.",
-             size=16, color=INK)
-    add_text(s, Inches(0.55), Inches(6.25), Inches(12.2), Inches(0.6),
-             "adding them on top of specs makes tree and KNN worse, not better.",
-             size=16, color=INK)
-    add_text(s, Inches(0.55), Inches(6.85), Inches(12.2), Inches(0.5),
-             "specs still win.",
-             size=18, bold=True, color=CSUB_BLUE)
 
 
 def slide_subgroup(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Per-city, with and without the photo",
-           "two cities benefit a little. the rest get worse.")
+    header(s, "Per-City, With and Without the Photo",
+           "KNN, Specs Only vs Specs + Image. Two Cities Benefit a Little. The Rest Get Worse.")
     s.shapes.add_picture(os.path.join(FIG, "fig12_per_city_delta.png"),
                          Inches(0.6), Inches(1.6), height=Inches(5.5))
 
@@ -702,28 +678,28 @@ def slide_subgroup(prs):
 def slide_kmeans(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "K-means on photo features alone",
-           "if photos carried price signal, clusters would land at different prices")
+    header(s, "K-Means on Simple Image Features",
+            "Clustering on the 27 Color and Edge Stats, Not the Spatial Filters")
     s.shapes.add_picture(os.path.join(FIG, "fig14_kmeans_image.png"),
                          Inches(0.3), Inches(1.6), width=Inches(9.0))
     add_text(s, Inches(9.6), Inches(2.0), Inches(3.4), Inches(0.6),
-             "what we found", size=20, bold=True, color=CSUB_BLUE)
+             "What We Found", size=20, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(9.6), Inches(2.7), Inches(3.4), Inches(4.0),
-             "four clusters, mean\nprices land within\n$80k of each other.\n\n"
-             "the photo features\ndon't separate price.",
+             "Four clusters, mean\nprices land within\n$80k of each other.\n\n"
+             "The photo features\ndon't separate price.",
              size=16, color=INK)
 
 
 def slide_test_table(prs, m):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Final test results",
-           "trained on train + val, evaluated once on the 3,095 held-out test rows")
+    header(s, "Final Test Results",
+           "Trained on Train + Val, Evaluated Once on the 3,095 Held-Out Test Rows")
 
     left = Inches(0.7); top = Inches(1.9)
     widths = [Inches(3.4), Inches(2.4), Inches(1.7), Inches(1.7), Inches(1.5), Inches(1.5)]
     cell_h = Inches(0.5)
-    heads = ["model", "features", "MAE", "RMSE", "<$50k", "<$100k"]
+    heads = ["Model", "Features", "MAE", "RMSE", "% Within $50k", "% Within $100k"]
 
     def cell(x, y, w, h, text, *, fill, color, bold=False, size=13):
         shp = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
@@ -743,13 +719,11 @@ def slide_test_table(prs, m):
         x += w
 
     rows = [
-        ("constant",                  "none",            m["test_constant_predictor"]),
-        ("linear regression",         "specs",           m["test_linear_specs"]),
-        ("linear regression",         "specs + spatial", m["test_linear_specs_spatial"]),
-        ("decision tree, d=15",       "specs",           m["test_tree_specs_depth15"]),
-        ("decision tree, d=10",       "specs + spatial", m["test_tree_specs_spatial_d10"]),
-        ("KNN, k=15",                 "specs",           m["test_knn_specs_k15"]),
-        ("KNN, k=15",                 "specs + spatial", m["test_knn_specs_spatial_k15"]),
+        ("Constant",                  "None",            m["test_constant_predictor"]),
+        ("Linear Regression",         "Specs",           m["test_linear_specs"]),
+        ("Linear Regression",         "Specs + Spatial", m["test_linear_specs_spatial"]),
+        ("KNN, k=15",                 "Specs",           m["test_knn_specs_k15"]),
+        ("KNN, k=15",                 "Specs + Spatial", m["test_knn_specs_spatial_k15"]),
     ]
     best_idx = min(range(len(rows)), key=lambda i: rows[i][2]["mae"])
     y = top + cell_h
@@ -766,13 +740,6 @@ def slide_test_table(prs, m):
         cell(x, y, widths[5], cell_h, f"{met['within_100k']:.1%}", fill=bg, color=INK, size=12)
         y += cell_h
 
-    add_text(s, Inches(0.55), Inches(6.2), Inches(12.2), Inches(0.6),
-             "specs-only decision tree wins on test.",
-             size=22, bold=True, color=CSUB_BLUE)
-    add_text(s, Inches(0.55), Inches(6.85), Inches(12.2), Inches(0.5),
-             "MAE $142k. 33% of guesses within $50k, 54% within $100k.",
-             size=15, color=INK)
-
 
 def slide_conclusion(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -782,21 +749,17 @@ def slide_conclusion(prs):
              "Conclusion", size=34, bold=True, color=WHITE)
 
     add_text(s, Inches(0.6), Inches(1.6), Inches(12.2), Inches(1.4),
-             "specs already carry the price signal.\n"
-             "the photo, hand-summarized in numpy, does not add anything on top.",
+              "Specs already carry the price signal.\n"
+              "The photo, hand-summarized in numpy, does not add anything on top.",
              size=24, color=CSUB_GOLD)
 
     add_text(s, Inches(0.6), Inches(4.0), Inches(12.2), Inches(0.6),
-             "what we learned", size=20, bold=True, color=CSUB_GOLD)
+              "What We Tried", size=20, bold=True, color=CSUB_GOLD)
     add_text(s, Inches(0.6), Inches(4.55), Inches(12.2), Inches(3.0),
-             "feeding raw pixels doesn't work — too many inputs, too few examples,\n"
-             "and classical models can't see that adjacent pixels are related.\n\n"
-             "we built the principled fix: six hand-designed filters plus 4 x 4 pooling.\n"
-             "the model gets spatial info — sky on top, lawn on bottom, edges where the roof is.\n"
-             "this still doesn't beat specs.\n\n"
-             "the signal exists inside the photo, but recovering it needs filters that LEARN\n"
-             "what to look for. that's what CNNs do.  hand-designed kernels can only go so far.",
-             size=15, color=WHITE)
+              "27 simple image features and 96 spatial filter features.\n"
+              "Preprocessing (crop, normalize, HSV) didn't help.\n"
+              "Neither linear nor KNN improved with photo features added.",
+             size=18, color=WHITE)
 
 
 def main():
@@ -806,6 +769,8 @@ def main():
         spatial = json.load(f)
     with open(os.path.join(RESULTS_DIR, "mlr_v3.json")) as f:
         mlr = json.load(f)
+    with open(os.path.join(RESULTS_DIR, "variant_comparison.json")) as f:
+        variants = json.load(f)
 
     prs = Presentation()
     prs.slide_width  = SLIDE_W
@@ -818,27 +783,44 @@ def main():
     slide_split(prs)
     slide_columns(prs)
     slide_encoding(prs)
+    slide_why_k10(prs)
     slide_regions(prs)
     slide_normalization(prs)
     slide_three_models(prs)
     slide_mlr_results(prs, mlr)
     slide_knn_euclidean(prs)
     slide_knn_distances(prs)
+    slide_baseline_box(prs)
     slide_worst_misses(prs)
     slide_hypothesis(prs)
+    slide_image_box(prs)
+    slide_preprocess(prs)
+    slide_variant_table(prs, variants)
     slide_why_not_pixels(prs)
     slide_filter_intro(prs)
     slide_filter_bank(prs)
-    slide_pooling(prs)
     slide_features(prs)
     slide_spatial_results(prs, spatial)
     slide_subgroup(prs)
-    slide_kmeans(prs)
     slide_test_table(prs, metrics)
     slide_conclusion(prs)
 
     out = os.path.join(REPO, "HousePrice_Final_Project.pptx")
-    prs.save(out)
+    try:
+        prs.save(out)
+    except PermissionError:
+        v = 2
+        while True:
+            out = os.path.join(REPO, f"HousePrice_Final_Project_v{v}.pptx")
+            try:
+                prs.save(out)
+                break
+            except PermissionError:
+                v += 1
+                if v > 20:
+                    out = os.path.join(os.environ.get("TEMP", "/tmp"), "HousePrice_Final_Project.pptx")
+                    prs.save(out)
+                    break
     print(f"saved {out}  ({len(prs.slides)} slides)")
 
 
