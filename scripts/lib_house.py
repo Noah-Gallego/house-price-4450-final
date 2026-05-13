@@ -20,7 +20,7 @@ INK       = "#202535"
 MUTED     = "#606878"
 PANEL     = "#F5F7FB"
 
-SPEC_COLS  = ["bed", "bath", "sqft", "city_target_mean", "city_lat", "city_lon"]
+SPEC_COLS  = ["bed", "bath", "sqft", "city_lat", "city_lon", "region_id"]
 CITIES_GEO = os.path.join(CLEAN_DIR, "cities_geo.csv")
 IMAGE_BASIC_COLS = (
     ["mean_r", "mean_g", "mean_b", "brightness", "contrast", "edge_density"]
@@ -79,15 +79,18 @@ def attach_city_target_mean(df, train_idx):
         geo = pd.read_csv(CITIES_GEO)
         lat_map = dict(zip(geo["citi"], geo["lat"]))
         lon_map = dict(zip(geo["citi"], geo["lon"]))
+        reg_map = dict(zip(geo["citi"], geo["region_id"])) if "region_id" in geo.columns else {}
         train_lat = train_df["citi"].map(lat_map)
         train_lon = train_df["citi"].map(lon_map)
         global_lat = float(train_lat.dropna().mean()) if train_lat.notna().any() else 34.0
         global_lon = float(train_lon.dropna().mean()) if train_lon.notna().any() else -118.0
         out["city_lat"] = out["citi"].map(lat_map).fillna(global_lat).astype(float)
         out["city_lon"] = out["citi"].map(lon_map).fillna(global_lon).astype(float)
+        out["region_id"] = out["citi"].map(reg_map).fillna(-1).astype(int) if reg_map else -1
     else:
         out["city_lat"] = 34.0
         out["city_lon"] = -118.0
+        out["region_id"] = -1
     return out, city_means, global_mean
 
 

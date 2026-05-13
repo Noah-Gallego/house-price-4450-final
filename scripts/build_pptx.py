@@ -287,128 +287,168 @@ def slide_columns(prs):
 
     rows = [
         ["column",      "example",                "action"],
-        ["image_id",    "0",                      "drop  (just a join key)"],
-        ["street",      "1317 Van Buren Avenue",  "extract suffix, target-encode"],
-        ["citi",        "Salton City, CA",        "target-encode (415 cities)"],
-        ["n_citi",      "317",                    "drop  (label-encoded citi, redundant)"],
-        ["bed",         "3",                      "keep  (z-score for KNN)"],
-        ["bath",        "2.0",                    "keep  (z-score for KNN)"],
-        ["sqft",        "1,560",                  "keep  (z-score for KNN)"],
-        ["price",       "$201,900",               "target  (what we predict)"],
+        ["image_id",    "0",                      "drop"],
+        ["street",      "1317 Van Buren Avenue",  "drop"],
+        ["citi",        "Salton City, CA",        "convert to coordinates"],
+        ["n_citi",      "317",                    "drop"],
+        ["bed",         "3",                      "keep"],
+        ["bath",        "2.0",                    "keep"],
+        ["sqft",        "1,560",                  "keep"],
+        ["price",       "$201,900",               "target"],
     ]
     _styled_table(s, Inches(0.55), Inches(1.7), Inches(12.2), Inches(4.8),
                   rows, font_size=14, header_font_size=15)
 
     add_text(s, Inches(0.55), Inches(6.55), Inches(12.2), Inches(0.6),
-             "five engineered features go into every model: bed, bath, sqft, city target mean, street suffix mean.",
+             "six features go into every model: bed, bath, sqft, city_lat, city_lon, region_id.",
              size=14, color=INK)
 
 
 def slide_encoding(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Target encoding for city and street",
-           "turn a text column into one number by averaging price within each value")
+    header(s, "City names become coordinates",
+           "we look each city up once with a geocoding API")
 
-    # left: city encoding
-    add_text(s, Inches(0.55), Inches(1.8), Inches(6.0), Inches(0.5),
-             "city  (415 unique values)", size=18, bold=True, color=CSUB_BLUE)
-    city_rows = [
-        ["city",            "train-mean price"],
-        ["Beverly Hills",   "$1,650,000"],
-        ["San Diego",       "$  710,000"],
-        ["Bakersfield",     "$  295,000"],
-        ["…",               "…"],
+    add_text(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(0.6),
+             "the lookup", size=20, bold=True, color=CSUB_BLUE)
+    lookup_rows = [
+        ["city",              "latitude",  "longitude"],
+        ["Beverly Hills, CA", "34.0736",   "-118.4004"],
+        ["San Diego, CA",     "32.7157",   "-117.1611"],
+        ["Bakersfield, CA",   "35.3733",   "-119.0187"],
+        ["Salton City, CA",   "33.3030",   "-115.9486"],
     ]
-    _styled_table(s, Inches(0.55), Inches(2.3), Inches(6.0), Inches(2.2),
-                  city_rows, font_size=13, header_font_size=14)
-    add_text(s, Inches(0.55), Inches(4.7), Inches(6.0), Inches(2.0),
-             "for each row, look up the city,\nuse that average as the feature.\n"
-             "cities not seen in train fall back\nto the overall mean price.",
-             size=14, color=INK)
+    _styled_table(s, Inches(0.55), Inches(2.5), Inches(12.2), Inches(2.3),
+                  lookup_rows, font_size=14, header_font_size=15)
 
-    # right: street encoding
-    add_text(s, Inches(7.0), Inches(1.8), Inches(6.0), Inches(0.5),
-             "street  (extract suffix first)", size=18, bold=True, color=CSUB_BLUE)
-    street_rows = [
-        ["suffix",   "train-mean price"],
-        ["circle",   "$791,000"],
-        ["lane",     "$716,000"],
-        ["road",     "$746,000"],
-        ["boulevard","$629,000"],
-    ]
-    _styled_table(s, Inches(7.0), Inches(2.3), Inches(6.0), Inches(2.2),
-                  street_rows, font_size=13, header_font_size=14)
-    add_text(s, Inches(7.0), Inches(4.7), Inches(6.0), Inches(2.0),
-             "the 12,401 unique addresses have\nno signal on their own.  the last word\n"
-             "(circle, lane, blvd, ...) does.\n11 suffix types, target-encoded.",
+    add_text(s, Inches(0.55), Inches(5.0), Inches(12.2), Inches(0.6),
+             "why this works", size=20, bold=True, color=CSUB_BLUE)
+    add_text(s, Inches(0.55), Inches(5.55), Inches(12.2), Inches(2.0),
+             "415 unique cities  =>  415 API calls, cached once on disk.\n"
+             "every row gets its city's latitude and longitude.\n"
+             "now 'nearest neighbor' actually means geographically near, not just same city name.",
+             size=16, color=INK)
+
+
+def slide_regions(prs):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(s, WHITE)
+    header(s, "Grouping cities into regions",
+           "K-means on the 415 city coordinates, k=10")
+    img = os.path.join(FIG, "fig22_regions.png")
+    if os.path.exists(img):
+        s.shapes.add_picture(img, Inches(0.4), Inches(1.6), height=Inches(5.0))
+    add_text(s, Inches(9.6), Inches(2.0), Inches(3.4), Inches(0.5),
+             "the idea", size=20, bold=True, color=CSUB_BLUE)
+    add_text(s, Inches(9.6), Inches(2.6), Inches(3.4), Inches(4.5),
+             "K-means takes the\n"
+             "coordinates and groups\n"
+             "nearby cities together.\n\n"
+             "every row gets one\n"
+             "extra feature: region_id.",
              size=14, color=INK)
 
 
 def slide_normalization(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Normalizing the numeric columns",
-           "without this, sqft and city mean dominate every distance KNN computes")
+    header(s, "Normalize so no column dominates",
+           "rescale every feature to the same range")
 
     rows = [
-        ["feature",            "raw range",          "after z-score"],
-        ["bed",                "1 to 6",             "≈ -2 to +3"],
-        ["bath",               "1 to 5",             "≈ -2 to +3"],
-        ["sqft",               "500 to 5,400",       "≈ -2 to +5"],
-        ["city target mean",   "$200k to $1.65M",    "≈ -2 to +4"],
-        ["street suffix mean", "$629k to $792k",     "≈ -2 to +3"],
+        ["feature",    "raw range",            "after min-max"],
+        ["bed",        "1 to 6",               "0 to 1"],
+        ["bath",       "1 to 5",               "0 to 1"],
+        ["sqft",       "500 to 5,400",         "0 to 1"],
+        ["city_lat",   "32.5 to 35.4",         "0 to 1"],
+        ["city_lon",   "-119.5 to -114.5",     "0 to 1"],
+        ["region_id",  "0 to 9",               "0 to 1"],
     ]
-    _styled_table(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(3.6),
+    _styled_table(s, Inches(0.55), Inches(1.9), Inches(12.2), Inches(3.9),
                   rows, font_size=14, header_font_size=15)
 
     add_text(s, Inches(0.55), Inches(5.8), Inches(12.2), Inches(0.5),
-             "z-score:  (value - train_mean) / train_std",
+             "min-max:   (value - min) / (max - min)",
              size=18, bold=True, color=CSUB_BLUE)
     add_text(s, Inches(0.55), Inches(6.35), Inches(12.2), Inches(0.8),
-             "linear and tree don't care about scale. KNN does — its distance is the sum of squared differences.\n"
-             "without normalizing, every neighbor lookup is decided by sqft alone.",
+             "without normalizing, sqft (range 4,900) drowns out bed (range 5).\n"
+             "every column is now between 0 and 1, so they all matter the same to KNN's distance.",
              size=14, color=INK)
 
 
 def slide_three_models(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "Three models",
-           "fit each on the five engineered features")
+    header(s, "Two models",
+           "to establish a text-only baseline before we touch the photos")
 
-    ys = Inches(2.0); col_w = Inches(4.0); gap = Inches(0.3)
-    xs = [Inches(0.55), Inches(0.55) + col_w + gap, Inches(0.55) + 2 * (col_w + gap)]
-    titles = ["linear regression", "decision tree", "k-nearest neighbors"]
+    ys = Inches(1.9); col_w = Inches(6.0); gap = Inches(0.4)
+    xs = [Inches(0.55), Inches(0.55) + col_w + gap]
+    titles = ["multiple linear regression", "KNN regressor"]
     bodies = [
-        "one weight per feature.\nfast, transparent.\nstruggles with non-linear\nrelationships like the\nsqft / price curve.",
-        "splits the data on one\nfeature at a time.\nhandles non-linear cuts,\ndoesn't care about scale,\ntuned by depth.",
-        "predict by averaging the\nk most similar houses.\nneeds normalized\nfeatures, tuned by k and\ndistance function.",
+        "one weight per feature, all summed plus an intercept.\n\n"
+        "prediction =\nw0 + w1*bed + w2*bath + w3*sqft\n"
+        "+ w4*city_lat + w5*city_lon + w6*region.\n\n"
+        "fast and transparent. assumes the relationship\nis a straight line.",
+
+        "for a new house, find the k closest houses in\nfeature space.\n\n"
+        "predict by averaging their prices\n(regression, not voting).\n\n"
+        "needs normalized features. tuned by k\nand by the distance function.",
     ]
     for x, t, b in zip(xs, titles, bodies):
-        add_bar(s, x, ys, col_w, Inches(0.55), CSUB_BLUE)
-        add_text(s, x + Inches(0.15), ys + Inches(0.07), col_w, Inches(0.5),
-                 t, size=18, bold=True, color=WHITE)
-        add_text(s, x + Inches(0.15), ys + Inches(0.85), col_w - Inches(0.3), Inches(3.5),
+        add_bar(s, x, ys, col_w, Inches(0.6), CSUB_BLUE)
+        add_text(s, x + Inches(0.2), ys + Inches(0.1), col_w, Inches(0.5),
+                 t, size=20, bold=True, color=WHITE)
+        add_text(s, x + Inches(0.2), ys + Inches(0.95), col_w - Inches(0.4), Inches(5.0),
                  b, size=15, color=INK)
+
+
+def slide_mlr_results(prs, mlr):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(s, WHITE)
+    header(s, "Multiple linear regression",
+           "validation performance, predicted vs actual price")
+    img = os.path.join(FIG, "fig23_mlr_pred_vs_actual.png")
+    if os.path.exists(img):
+        s.shapes.add_picture(img, Inches(0.3), Inches(1.55), height=Inches(5.6))
+
+    m = mlr["validation_metrics"]
+    box_x = Inches(8.5); box_y = Inches(1.9)
+    add_text(s, box_x, box_y, Inches(4.4), Inches(0.5),
+             "results", size=22, bold=True, color=CSUB_BLUE)
+
+    rows = [
+        ("MAE",   f"${m['mae']/1000:,.0f}k"),
+        ("RMSE",  f"${m['rmse']/1000:,.0f}k"),
+    ]
+    y = box_y + Inches(0.85)
+    for label, val in rows:
+        add_text(s, box_x, y, Inches(2.4), Inches(0.6),
+                 label, size=22, color=MUTED)
+        add_text(s, box_x + Inches(2.4), y, Inches(2.0), Inches(0.6),
+                 val, size=26, bold=True, color=INK)
+        y = y + Inches(0.9)
+
+
+def slide_knn_euclidean(prs):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(s, WHITE)
+    header(s, "KNN with Euclidean distance",
+           "each box summarizes 500 random reshuffles at that k")
+    img = os.path.join(FIG, "fig24_knn_euclidean.png")
+    if os.path.exists(img):
+        s.shapes.add_picture(img, Inches(0.5), Inches(1.7), width=Inches(12.3))
 
 
 def slide_knn_distances(prs):
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(s, WHITE)
-    header(s, "KNN, four distance functions",
-           "each box summarizes 200 random reshuffles at that k")
+    header(s, "We repeated this for all four distance functions",
+           "euclidean, manhattan, chebyshev, minkowski")
     img = os.path.join(FIG, "fig20_knn_distances.png")
     if os.path.exists(img):
-        s.shapes.add_picture(img, Inches(0.4), Inches(1.6), width=Inches(9.5))
-    add_text(s, Inches(10.1), Inches(1.9), Inches(3.0), Inches(0.5),
-             "reading the plot", size=18, bold=True, color=CSUB_BLUE)
-    add_text(s, Inches(10.1), Inches(2.4), Inches(3.0), Inches(4.5),
-             "each panel is a different\ndistance function.\n\n"
-             "each box: spread of\nvalidation MAE at that k.\n\n"
-             "gold line connects the\nmedians.\n\n"
-             "lower is better.",
-             size=13, color=INK)
+        s.shapes.add_picture(img, Inches(0.3), Inches(1.6), width=Inches(12.7))
 
 
 def slide_baseline_box(prs):
@@ -764,6 +804,8 @@ def main():
         metrics = json.load(f)
     with open(os.path.join(RESULTS_DIR, "spatial_comparison.json")) as f:
         spatial = json.load(f)
+    with open(os.path.join(RESULTS_DIR, "mlr_v3.json")) as f:
+        mlr = json.load(f)
 
     prs = Presentation()
     prs.slide_width  = SLIDE_W
@@ -776,8 +818,11 @@ def main():
     slide_split(prs)
     slide_columns(prs)
     slide_encoding(prs)
+    slide_regions(prs)
     slide_normalization(prs)
     slide_three_models(prs)
+    slide_mlr_results(prs, mlr)
+    slide_knn_euclidean(prs)
     slide_knn_distances(prs)
     slide_worst_misses(prs)
     slide_hypothesis(prs)

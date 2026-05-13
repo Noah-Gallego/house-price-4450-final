@@ -11,18 +11,42 @@ from lib_house import (
     load_features, FIGURES_DIR, RESULTS_DIR, CLEAN_DIR, CITIES_GEO,
     CSUB_BLUE, CSUB_GOLD, INK, MUTED, style_axes,
 )
-from models import knn_predict, fit_minmax, apply_minmax
+from models import fit_minmax, apply_minmax
 
-N_TRIALS = 200
+N_TRIALS = 100
 K_VALUES = [1, 3, 5, 7, 10, 15, 20, 30, 50]
 P_TRAIN, P_VAL = 0.65, 0.15
 METRICS = ["euclidean", "manhattan", "chebyshev", "minkowski"]
+P_MINKOWSKI = 3
 
 
 def one_shuffle(n, rng):
     idx = np.arange(n); rng.shuffle(idx)
     n_tr = int(round(n * P_TRAIN)); n_va = int(round(n * P_VAL))
     return idx[:n_tr], idx[n_tr:n_tr + n_va]
+
+
+def distance_matrix(Xq, Xt, metric):
+    if metric == "euclidean":
+        tn = (Xt * Xt).sum(axis=1)
+        qn = (Xq * Xq).sum(axis=1)
+        d = qn[:, None] + tn[None, :] - 2.0 * (Xq @ Xt.T)
+        np.maximum(d, 0, out=d)
+        return d
+    n_q = Xq.shape[0]; n_t = Xt.shape[0]
+    d = np.empty((n_q, n_t), dtype=np.float64)
+    # chunk so peak memory stays bounded
+    CHUNK = max(1, 30_000_000 // max(n_t * Xt.shape[1], 1))
+    for s in range(0, n_q, CHUNK):
+        e = min(n_q, s + CHUNK)
+        diff = np.abs(Xq[s:e, None, :] - Xt[None, :, :])
+        if metric == "manhattan":
+            d[s:e] = diff.sum(axis=2)
+        elif metric == "chebyshev":
+            d[s:e] = diff.max(axis=2)
+        elif metric == "minkowski":
+            d[s:e] = (diff ** P_MINKOWSKI).sum(axis=2) ** (1.0 / P_MINKOWSKI)
+    return d
 
 
 def main():
@@ -59,21 +83,20 @@ def main():
         Xtr = apply_minmax(X[tr], lo, rng_w)
         Xva = apply_minmax(X[va], lo, rng_w)
         for m in METRICS:
+            D = distance_matrix(Xva, Xtr, m)
             for k in K_VALUES:
-                pred = knn_predict(Xtr, y[tr], Xva, k=k, metric=m, p=3)
+                idx = np.argpartition(D, kth=k - 1, axis=1)[:, :k]
+                pred = y[tr][idx].mean(axis=1)
                 out[m][k].append(float(np.mean(np.abs(pred - y[va]))))
-        if (t + 1) % 25 == 0 or t == N_TRIALS - 1:
+        if (t + 1) % 10 == 0 or t == N_TRIALS - 1:
             print(f"trial {t+1}/{N_TRIALS}  elapsed={time.time()-t0:.1f}s", flush=True)
 
-    # save raw
-    os.makedirs(CLEAN_DIR, exist_ok=True)
     flat = {}
     for m in METRICS:
         for k in K_VALUES:
             flat[f"{m}_k{k}"] = np.asarray(out[m][k])
-    np.savez(os.path.join(CLEAN_DIR, "knn_distance_cv.npz"), **flat)
+    np.savez(os.path.join(CLEAN_DIR, "knn_4dist_cv.npz"), **flat)
 
-    # summary
     summary = {}
     for m in METRICS:
         per_k = {k: float(np.median(out[m][k])) for k in K_VALUES}
@@ -81,13 +104,11 @@ def main():
         summary[m] = {"best_k": int(best_k),
                        "best_median_mae": float(per_k[best_k]),
                        "per_k_median": {str(k): v for k, v in per_k.items()}}
-    with open(os.path.join(RESULTS_DIR, "knn_distance_cv.json"), "w") as f:
+    with open(os.path.join(RESULTS_DIR, "knn_4dist_cv.json"), "w") as f:
         json.dump(summary, f, indent=2)
-
     for m, s in summary.items():
-        print(f"  {m:11s} best k = {s['best_k']:>2d}   median MAE = ${s['best_median_mae']/1000:.1f}k")
+        print(f"  {m:11s} best k = {s['best_k']:>2d}   median MAE = ${s['best_median_mae']/1000:.1f}k", flush=True)
 
-    # 2x2 grid of boxplots
     plt.rcParams.update({
         "font.family": "DejaVu Sans",
         "axes.titleweight": "bold",

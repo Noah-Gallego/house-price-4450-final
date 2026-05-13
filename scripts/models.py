@@ -17,6 +17,7 @@ def predict_linear(w, X):
 
 
 def fit_scaler(X):
+    # legacy z-score scaler, kept for older scripts
     mu = X.mean(axis=0)
     sd = X.std(axis=0)
     sd = np.where(sd < 1e-12, 1.0, sd)
@@ -25,6 +26,17 @@ def fit_scaler(X):
 
 def apply_scaler(X, mu, sd):
     return (X - mu) / sd
+
+
+def fit_minmax(X):
+    lo = X.min(axis=0)
+    hi = X.max(axis=0)
+    rng = np.where(hi - lo < 1e-12, 1.0, hi - lo)
+    return lo, rng
+
+
+def apply_minmax(X, lo, rng):
+    return (X - lo) / rng
 
 
 def knn_predict(X_train, y_train, X_query, k, metric="euclidean", p=3):
