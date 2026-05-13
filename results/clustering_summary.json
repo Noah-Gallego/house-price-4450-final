@@ -1,0 +1,38 @@
+{
+  "kmeans_k": 4,
+  "kmeans_sse_on_scaled_image_train": 160756.91441099893,
+  "cluster_mean_prices_ordered_low_to_high": [
+    662943.1917098445,
+    664220.4856512141,
+    709805.5767526714,
+    743870.6494440811
+  ],
+  "cluster_sizes_ordered": [
+    1351,
+    1812,
+    3837,
+    3058
+  ],
+  "hierarchical_cities": [
+    "San Diego",
+    "Los Angeles",
+    "Lancaster",
+    "La Quinta",
+    "Riverside",
+    "Corona",
+    "Escondido",
+    "Fontana",
+    "Palm Springs",
+    "Big Bear",
+    "Palmdale",
+    "Oceanside",
+    "Rancho Cucamonga",
+    "Palm Desert",
+    "Murrieta",
+    "Paso Robles",
+    "San Bernardino",
+    "Lake Arrowhead",
+    "Rancho Mirage",
+    "Temecula"
+  ]
+}
