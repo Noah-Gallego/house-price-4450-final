@@ -2,6 +2,10 @@
 
 Data mining final project studying house-price prediction with property specifications, city information, spatial features, image-derived features, and clustering.
 
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=python,numpy,pandas&theme=light" alt="Python, NumPy, and pandas" />
+</p>
+
 ## Research workflow
 
 The project is organized as a procedural Python analysis pipeline. It includes exploratory analysis, baseline models, shuffled cross-validation, error analysis, tuned trees and KNN models, clustering, geocoding, spatial features, filter-bank experiments, and final evaluation.
