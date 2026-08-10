@@ -10,14 +10,6 @@ Data mining final project studying house-price prediction with property specific
 
 The project is organized as a procedural Python analysis pipeline. It includes exploratory analysis, baseline models, shuffled cross-validation, error analysis, tuned trees and KNN models, clustering, geocoding, spatial features, filter-bank experiments, and final evaluation.
 
-## Tech stack
-
-- Python
-- NumPy and pandas
-- scikit-learn
-- Matplotlib and SciPy
-- Pillow for image features
-
 ## Repository contents
 
 - `scripts/` — feature extraction, analysis, model evaluation, visualization, geocoding, and slide-building scripts
