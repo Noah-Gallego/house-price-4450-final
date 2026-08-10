@@ -40,6 +40,12 @@ These are recorded experiment results, not a claim that the model is suitable fo
 
 The scripts are numbered to reflect the analysis sequence. Inspect each script's input paths and configuration before running it; the repository does not provide a single dependency manifest or one verified end-to-end command.
 
+## Preview / Media
+
+[![Final project presentation](https://noah-readme-assets-v4.vercel.app/house-price-4450-final/HousePrice_Final_Project.pdf.png)](https://noah-readme-assets-v4.vercel.app/house-price-4450-final/HousePrice_Final_Project.pdf)
+
+The linked file is the committed final presentation PDF; no separate application screenshot is claimed.
+
 ## Context and attribution
 
 This repository is a CMPS 4450 Data Mining final project at CSU Bakersfield. The dataset and included third-party material retain their original rights and attribution. No license is declared.
