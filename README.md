@@ -2,6 +2,9 @@
 
 Data mining final project studying house-price prediction with property specifications, city information, spatial features, image-derived features, and clustering.
 
+> [!NOTE]
+> The recorded metrics describe this repository's experiments on its committed test split; they are not a claim that the model is suitable for real-world valuation.
+
 <p align="center">
   <img src="https://skillicons.dev/icons?i=python,numpy,pandas&theme=light" alt="Python, NumPy, and pandas" />
 </p>
@@ -9,6 +12,15 @@ Data mining final project studying house-price prediction with property specific
 ## Research workflow
 
 The project is organized as a procedural Python analysis pipeline. It includes exploratory analysis, baseline models, shuffled cross-validation, error analysis, tuned trees and KNN models, clustering, geocoding, spatial features, filter-bank experiments, and final evaluation.
+
+```mermaid
+flowchart LR
+    Data[Property and image data] --> Features[Feature extraction]
+    Features --> EDA[Exploration and error analysis]
+    EDA --> Models[Baseline and tuned models]
+    Models --> Spatial[Spatial and clustering experiments]
+    Spatial --> Evaluation[Final evaluation and artifacts]
+```
 
 ## Repository contents
 
